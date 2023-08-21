@@ -5,14 +5,21 @@
 LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 #define RST_PIN         9           
 #define SS_PIN          10          
+#define relay A5
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance
 
+
 void setup() {
   lcd.begin(16, 2);
-  Serial.begin(9600);        
+  Serial.begin(9600);     
+  Serial.print("Grabador rfid1");   
+  pinMode(relay, OUTPUT);
+  digitalWrite(relay, HIGH);
+  delay(100);
+  digitalWrite(relay, LOW);
   lcd.print("Electronics dev");//mientras carga lo pirmero en mostrar
-  delay(2000);
+  delay(1000);
   lcd.clear();
   SPI.begin();               
   mfrc522.PCD_Init();        
@@ -48,6 +55,9 @@ void loop() {
     lcd.print("Grabando no ");
     lcd.setCursor(0, 1);
     lcd.print("retire token");
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
 
   }
   Serial.print(F(" PICC type: "));   // Dump PICC type
@@ -73,6 +83,13 @@ void loop() {
     Serial.print(F("PCD_Authenticate() failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
     lcd.clear();
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
+    delay(100);    
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
     lcd.write("Error ");
     delay(2000);
     return;
@@ -83,7 +100,14 @@ void loop() {
   status = mfrc522.MIFARE_Write(block, buffer, 16);
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("MIFARE_Write() failed: "));
-    Serial.println(mfrc522.GetStatusCodeName(status));
+    Serial.println(mfrc522.GetStatusCodeName(status));    
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
+    delay(100);    
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
     lcd.clear();
     lcd.write("Error ");
     delay(2000);
@@ -97,6 +121,13 @@ void loop() {
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("PCD_Authenticate() failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
+    delay(100);    
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
     lcd.clear();
     lcd.write("Error ");
     delay(2000);
@@ -108,6 +139,13 @@ void loop() {
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("MIFARE_Write() failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
+    delay(100);    
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
     lcd.clear();
     lcd.write("Error ");
     delay(2000);
@@ -126,6 +164,13 @@ void loop() {
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("PCD_Authenticate() failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
+    delay(100);    
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
     lcd.clear();
     lcd.write("Error ");
     delay(2000);
@@ -137,6 +182,13 @@ void loop() {
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("MIFARE_Write() failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
+    delay(100);    
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
     lcd.clear();
     lcd.write("Error ");
     delay(2000);
@@ -150,6 +202,13 @@ void loop() {
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("PCD_Authenticate() failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
+    delay(100);    
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
     lcd.clear();
     lcd.write("Error ");
     delay(2000);
@@ -161,6 +220,13 @@ void loop() {
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("MIFARE_Write() failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
+    delay(100);    
+    digitalWrite(relay, HIGH);
+    delay(100);
+    digitalWrite(relay, LOW);
     lcd.clear();
     lcd.write("Error ");
     delay(2000);
@@ -168,15 +234,16 @@ void loop() {
   }
   else Serial.println(F("MIFARE_Write() success: "));
 
-
+  digitalWrite(relay, HIGH);
+  delay(200);
+  digitalWrite(relay, LOW);
   Serial.println(" Listo ");
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Listo puede");
   lcd.setCursor(0, 1);
   lcd.print("retirar token :)");
-  delay(100000);
+  delay(50000);
   mfrc522.PICC_HaltA(); // Halt PICC
   mfrc522.PCD_StopCrypto1();  // Stop encryption on PCD
-
 }

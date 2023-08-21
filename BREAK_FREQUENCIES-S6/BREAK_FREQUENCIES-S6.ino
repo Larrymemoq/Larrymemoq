@@ -13,7 +13,7 @@ LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 #define O4 A3
 #define O5 A4
 #define O6 8
-#define relay A5
+#define Buzzer A5
 String Modelo="";
 int ModNum=0;
 boolean resetStatus;
@@ -27,10 +27,10 @@ void setup() {
   lcd.begin(16, 2);
   Serial.begin(9600);
   Serial.print("Iniciando Rompe frecuencias 3");
-  pinMode(relay, OUTPUT);
-  digitalWrite(relay, HIGH);
+  pinMode(Buzzer, OUTPUT);
+  digitalWrite(Buzzer, HIGH);
   delay(100);
-  digitalWrite(relay, LOW);
+  digitalWrite(Buzzer, LOW);
   lcd.print("Electronics dev");//mientras carga lo pirmero en mostrar
   delay(1000);
   lcd.clear();
@@ -41,7 +41,7 @@ void setup() {
   pinMode(O3, OUTPUT);
   pinMode(O4, OUTPUT);
   pinMode(O5, OUTPUT);
-  pinMode(O6, OUTPUT);  
+  pinMode(O6, OUTPUT);
 }
 void loop() {
   digitalWrite(O1,LOW);
@@ -49,7 +49,7 @@ void loop() {
   digitalWrite(O3,LOW);
   digitalWrite(O4,LOW);
   digitalWrite(O5,LOW);
-  digitalWrite(O6,LOW);  
+  digitalWrite(O6,LOW);
   lcd.setCursor(0, 0);
   lcd.print("Rassini Frenos ");//PRIMER LINEA MENSAJE ESTATICO
   lcd.setCursor(0, 1);
@@ -74,13 +74,13 @@ void loop() {
    if (status != MFRC522::STATUS_OK) {
      Serial.print(F("Authentication failed: "));
      Serial.println(mfrc522.GetStatusCodeName(status));
-     digitalWrite(relay, HIGH);
+     digitalWrite(Buzzer, HIGH);
      delay(100);
-     digitalWrite(relay, LOW); 
-     delay(100);     
-     digitalWrite(relay, HIGH);
+     digitalWrite(Buzzer, LOW);
      delay(100);
-     digitalWrite(relay, LOW);     
+     digitalWrite(Buzzer, HIGH);
+     delay(100);
+     digitalWrite(Buzzer, LOW);
      lcd.clear();
      lcd.write("Error ");
      delay(5000);
@@ -90,13 +90,13 @@ void loop() {
    if (status != MFRC522::STATUS_OK) {
      Serial.print(F("Reading failed: "));
      Serial.println(mfrc522.GetStatusCodeName(status));
-     digitalWrite(relay, HIGH);
+     digitalWrite(Buzzer, HIGH);
      delay(100);
-     digitalWrite(relay, LOW); 
-     delay(100);     
-     digitalWrite(relay, HIGH);
+     digitalWrite(Buzzer, LOW);
      delay(100);
-     digitalWrite(relay, LOW);
+     digitalWrite(Buzzer, HIGH);
+     delay(100);
+     digitalWrite(Buzzer, LOW);
      lcd.clear();
      lcd.write("Error ");
      delay(5000);
@@ -118,13 +118,13 @@ void loop() {
    if (status != MFRC522::STATUS_OK) {
      Serial.print(F("Authentication failed: "));
      Serial.println(mfrc522.GetStatusCodeName(status));
-     digitalWrite(relay, HIGH);
+     digitalWrite(Buzzer, HIGH);
      delay(100);
-     digitalWrite(relay, LOW); 
-     delay(100);     
-     digitalWrite(relay, HIGH);
+     digitalWrite(Buzzer, LOW);
      delay(100);
-     digitalWrite(relay, LOW);
+     digitalWrite(Buzzer, HIGH);
+     delay(100);
+     digitalWrite(Buzzer, LOW);
      lcd.clear();
      lcd.write("Error ");
      delay(5000);
@@ -133,13 +133,13 @@ void loop() {
    status = mfrc522.MIFARE_Read(block, buffer2, &len);
    if (status != MFRC522::STATUS_OK) {
      Serial.print(F("Reading failed: "));
-     digitalWrite(relay, HIGH);
+     digitalWrite(Buzzer, HIGH);
      delay(100);
-     digitalWrite(relay, LOW); 
-     delay(100);     
-     digitalWrite(relay, HIGH);
+     digitalWrite(Buzzer, LOW);
      delay(100);
-     digitalWrite(relay, LOW);
+     digitalWrite(Buzzer, HIGH);
+     delay(100);
+     digitalWrite(Buzzer, LOW);
      lcd.clear();
      lcd.write("Error ");
      delay(5000);
@@ -155,7 +155,7 @@ void loop() {
    for(int x=0;x<5;x++){     //contruccionde array en String
        Modelo+=buffer2[x];
    }
-   
+
    ModNum=Modelo.toInt(); // convertir de string a int
    Serial.print(ModNum);
    switch (ModNum) {   //inico de switch case para contruir la lectura
@@ -535,34 +535,24 @@ void loop() {
       digitalWrite(O5,HIGH);
       digitalWrite(O6,HIGH);
       break;
-    case 16833:
-      lcd.setCursor(0, 1);
-      lcd.print("LARRY");
-      digitalWrite(O1,HIGH);
-      digitalWrite(O2,HIGH);
-      digitalWrite(O3,HIGH);
-      digitalWrite(O4,HIGH);
-      digitalWrite(O5,HIGH);
-      digitalWrite(O6,HIGH);
-      break;
-   
+
     default:
-      digitalWrite(relay, HIGH);
+      digitalWrite(Buzzer, HIGH);
       delay(100);
-      digitalWrite(relay, LOW); 
-      delay(100);     
-      digitalWrite(relay, HIGH);
+      digitalWrite(Buzzer, LOW);
       delay(100);
-      digitalWrite(relay, LOW);
+      digitalWrite(Buzzer, HIGH);
+      delay(100);
+      digitalWrite(Buzzer, LOW);
       lcd.setCursor(0, 1);
       lcd.print("Desconocido ");
       delay(5000);
-      reset();      
-      
+      reset();
+
    }
-   digitalWrite(relay, HIGH);
+   digitalWrite(Buzzer, HIGH);
    delay(100);
-   digitalWrite(relay, LOW);
+   digitalWrite(Buzzer, LOW);
    delay(86400000);
    delay(86400000);
    mfrc522.PICC_HaltA();
